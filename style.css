@@ -1,0 +1,22 @@
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:  rou
+    ;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: bisque;
+    margin: 3px solid;
+    padding: 1px;
+}
+
+button {
+    margin-left: 10px;
+}
