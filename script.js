@@ -125,94 +125,119 @@
 
 // // Ex03. Implementem a funcionalidade de listar produtos pela categoria ("handleListarProdutosPelaCategoria"), que irá ser chamada quando o usuário mudar a categoria, depois consumir a API para buscar os produtos somente daquela categoria.
 
-// Função para buscar dados das categorias
-const entrada = document.getElementById('cachorro') 
+// Função para buscar dados das categorias 
+
+
+
 const botao = document.getElementById('btn')
-async function handleCarregarraças() {
+async function handleFotosRacas() {
+    const select = (document.getElementById('cachorro').value).toLowerCase()
     try {
         // Consumindo a API no endpoint que trás as categorias
-        const response = await fetch('https://dog.ceo/api/breed/{breed}/images/random/4')
+        const response = await fetch(`https://dog.ceo/api/breed/${select}/images`)
 
         if (!response.ok) {
             throw new Error("Solicitação foi realizada, mas com um status de erro.")
         }
-
         // Converter os dados para JSON
-        const raças = await response.json()
-        return raças
+        const racas = await response.json()
+        console.log(racas)
+        return racas
     } catch (error) {
         console.error(error.message)
-        
     }
-    window.addEventListener('DOMContentLoaded', handleCarregarraças)
 }
+
+botao.addEventListener('click', handleFotosRacas)
+
+async function handleCarregarRacas() {
+    let url = "https://dog.ceo/api/breeds/list/all"
+    try {
+        // Consumindo a API no endpoint que trás as categorias
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error("Solicitação foi realizada, mas com um status de erro.")
+        }
+        // Converter os dados para JSON
+        const racas = await response.json()
+        console.log(racas)
+        return racas
+    } catch (error) {
+        console.error(error.message)
+    }
+}
+
+window.addEventListener("DOMContentLoaded", handleCarregarRacas)
+
+//window.addEventListener('DOMContentLoaded', handleCarregarraças)
 
 // Buscando Select de categoria.
 // const selectCategoria = document.getElementById('category')
 
 // Função para carregar as raças na tela
-async function handleCarregarraças() {
-    // Busca as raças do backend
-    const raças = await buscarraças()
+// async function handleCarregarraças() {
+//     // Busca as raças do backend
+//     const raças = await buscarraças()
 
-    const labelRaça = {
-         "electronics": "Eletrônico",
-    //     "jewelery": "Joias",
-    //     "men's clothing": "Roupas Masculinas",
-    //     "women's clothing": "Roupas Femininas"
-            "Affenpinscher": "Affenpinscher",
-                "African": "African",
-                "Aireadade": "Aireadade",
-                "Akita": "Akita",
-                "Appenzeller": "Appenzeller",
-                "Kelpie Australian": "Kelpie Australian",
-                "Sheper Australian": "Sheper Australian",
-                "India Bakharwal": "India Bakharwal",
-                "Basenji": "Basenji",
-                "Beagle": "Beagle",
-                "Bluetick": "Bluetick",
-                "Borzoi": "Borzoi",
-                "Bouvier": "Bouvier",
-                "Boxer": "Boxer",
-                "Brabancon": "Brabancon",
-                "Briard": "Briard",
-                "Norwegian Buhund": "Norwegian Buhund",
-                "Boston Bulldog": "Boston Bulldog",
-                "English Bulldog": "English Bulldog",
-                "French Bulldog": "French Bulldog"
-    }
-}
-    const labelRaca = {
-        raças = {
-            //         id: int,
-            //         title: string,
-            //         price: number,
-            //         image: string
-            //     }
-    }
+//     const labelRaça = {
+//     //      "electronics": "Eletrônico",
+//     //     "jewelery": "Joias",
+//     //     "men's clothing": "Roupas Masculinas",
+//     //     "women's clothing": "Roupas Femininas"
+//             "Affenpinscher": "Affenpinscher",
+//                 "African": "African",
+//                 "Aireadade": "Aireadade",
+//                 "Akita": "Akita",
+//                 "Appenzeller": "Appenzeller",
+//                 "Kelpie Australian": "Kelpie Australian",
+//                 "Sheper Australian": "Sheper Australian",
+//                 "India Bakharwal": "India Bakharwal",
+//                 "Basenji": "Basenji",
+//                 "Beagle": "Beagle",
+//                 "Bluetick": "Bluetick",
+//                 "Borzoi": "Borzoi",
+//                 "Bouvier": "Bouvier",
+//                 "Boxer": "Boxer",
+//                 "Brabancon": "Brabancon",
+//                 "Briard": "Briard",
+//                 "Norwegian Buhund": "Norwegian Buhund",
+//                 "Boston Bulldog": "Boston Bulldog",
+//                 "English Bulldog": "English Bulldog",
+//                 "French Bulldog": "French Bulldog"
+//     }
+// }
+//     const labelRaca = {
+//         raças = {
+//             //         id: int,
+//             //         title: string,
+//             //         price: number,
+//             //         image: string
+//             //     }
+//     }
 
-    // Para cada categoria, crie uma opção e adicione-a no select
-    for (let raça of raças) {
-        const raçaOption = document.createElement('option') 
-        raçaOption.value = raça
-        raçaOption.textContent = labelRaça[raça]
+//     // Para cada categoria, crie uma opção e adicione-a no select
+//     for (let raça of raças) {
+//         const raçaOption = document.createElement('option') 
+//         raçaOption.value = raça
+//         raçaOption.textContent = labelRaça[raça]
 
-        selectraça.appendChild(raçaOption)
-    }
-}
+//         selectraça.appendChild(raçaOption)
+//     }
+// }
 
-window.addEventListener("DOMContentLoaded", handleCarregarraças)
+// window.addEventListener("DOMContentLoaded", handleCarregarraças)
 
-async function handleListarProdutosPelaraça() {
-    // 1. Buscar Valor do Select (Select.value)
-    const category = selectraça.value
+// async function handleListarProdutosPelaraça() {
+//     // 1. Buscar Valor do Select (Select.value)
+//     const category = selectraça.value
 
-    // 2. Consumir API para buscar pela raça (https://fakestoreapi.com/products/category/{raça})
-    const response = await fetch(`https://fakestoreapi.com/products/category/${category}`)
-    const products = await response.json()
+//     // 2. Consumir API para buscar pela raça (https://fakestoreapi.com/products/category/{raça})
+//     const response = await fetch(`https://fakestoreapi.com/products/category/${category}`)
+//     const products = await response.json()
 
-    // 3. Listar os Produtos (chamando a função)
-    listarProdutos(products)
-} 
+//     // 3. Listar os Produtos (chamando a função)
+//     listarProdutos(products)
+// } 
 
-selectraça.addEventListener("change", handleListarProdutosPelaraça)
+// selectraça.addEventListener("change", handleListarProdutosPelaraça)
