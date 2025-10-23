@@ -129,46 +129,121 @@
 
 
 
-const botao = document.getElementById('btn')
+// 1. Seletores do DOM
+const botao = document.getElementById('btn');
+const selectElement = document.getElementById('cachorro');
+const fotosContainer = document.getElementById('fotos-container');
+
+// Verifica se os elementos essenciais existem
+if (!botao || !selectElement || !fotosContainer) {
+    console.error("Erro: Um ou mais elementos DOM necessários (btn, cachorro, fotos-container) não foram encontrados.");
+}
+
+// --- Função para buscar e exibir fotos de uma raça específica ---
 async function handleFotosRacas() {
-    const select = (document.getElementById('cachorro').value).toLowerCase()
+    // Limpa o contêiner de fotos anterior
+    fotosContainer.innerHTML = '<h2>Carregando fotos...</h2>';
+
+    // Obtém o valor selecionado e converte para minúsculas
+    const select = selectElement.value.toLowerCase();
+    
+    // O endpoint 'images' retorna TODAS as imagens, o que pode ser demais. 
+    // Mudei para 'images/random/10' para retornar 10 imagens aleatórias.
+    const url = `https://dog.ceo/api/breed/${select}/images/random/10`;
+
     try {
-        // Consumindo a API no endpoint que trás as categorias
-        const response = await fetch(`https://dog.ceo/api/breed/${select}/images`)
+        const response = await fetch(url);
 
         if (!response.ok) {
-            throw new Error("Solicitação foi realizada, mas com um status de erro.")
+             // Tenta extrair a mensagem de erro do JSON
+            const errorData = await response.json();
+            throw new Error(`Erro ${response.status}: Raça não encontrada ou outro erro da API. Mensagem: ${errorData.message}`);
         }
-        // Converter os dados para JSON
-        const racas = await response.json()
-        console.log(racas)
-        return racas
+
+        const data = await response.json();
+        const urlsImagens = data.message;
+        
+        // Remove a mensagem de 'Carregando...'
+        fotosContainer.innerHTML = ''; 
+
+        if (urlsImagens && urlsImagens.length > 0) {
+            // Adiciona as imagens ao container
+            urlsImagens.forEach(url => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `Foto de cachorro da raça ${select}`;
+                img.classList.add('dog-image'); // Adicione uma classe para estilização
+                fotosContainer.appendChild(img);
+            });
+        } else {
+            fotosContainer.innerHTML = `<p>Nenhuma foto encontrada para a raça <strong>${select}</strong>.</p>`;
+        }
+        
     } catch (error) {
-        console.error(error.message)
+        console.error("Erro ao buscar fotos:", error.message);
+        fotosContainer.innerHTML = `<p style="color: red;">Ops! Não foi possível carregar as fotos. Detalhe: ${error.message}</p>`;
     }
 }
 
-botao.addEventListener('click', handleFotosRacas)
-
+// --- Função para carregar a lista de raças no <select> ---
 async function handleCarregarRacas() {
-    let url = "https://dog.ceo/api/breeds/list/all"
+    let url = "https://dog.ceo/api/breeds/list/all";
+    
+    // Desabilita o select enquanto carrega
+    selectElement.disabled = true;
+    selectElement.innerHTML = '<option>Carregando raças...</option>'; 
+
     try {
-        // Consumindo a API no endpoint que trás as categorias
-        const response = await fetch(url)
+        const response = await fetch(url);
 
         if (!response.ok) {
-            throw new Error("Solicitação foi realizada, mas com um status de erro.")
+            throw new Error(`Erro ${response.status}: Falha ao buscar a lista de raças.`);
         }
-        // Converter os dados para JSON
-        const racas = await response.json()
-        console.log(racas)
-        return racas
+
+        const data = await response.json();
+        // A lista de raças está no objeto 'message'
+        const listaRaças = data.message;
+
+        // Limpa o select e adiciona a opção padrão
+        selectElement.innerHTML = '<option value="" disabled selected>Selecione uma Raça</option>'; 
+        
+        // Itera sobre as raças e as adiciona como <option>
+        for (const racaPrincipal in listaRaças) {
+            const subRaças = listaRaças[racaPrincipal];
+
+            if (subRaças.length === 0) {
+                // Adiciona raça principal (Ex: 'hound')
+                const option = document.createElement('option');
+                option.value = racaPrincipal;
+                // Capitaliza a primeira letra para melhor exibição
+                option.textContent = racaPrincipal.charAt(0).toUpperCase() + racaPrincipal.slice(1);
+                selectElement.appendChild(option);
+            } else {
+                // Adiciona sub-raças (Ex: 'hound-afghan')
+                subRaças.forEach(subRaca => {
+                    const nomeCompleto = `${racaPrincipal}-${subRaca}`;
+                    const nomeExibicao = `${subRaca.charAt(0).toUpperCase() + subRaca.slice(1)} ${racaPrincipal.charAt(0).toUpperCase() + racaPrincipal.slice(1)}`;
+
+                    const option = document.createElement('option');
+                    option.value = nomeCompleto;
+                    option.textContent = nomeExibicao;
+                    selectElement.appendChild(option);
+                });
+            }
+        }
+        
+        // Habilita o select após carregar
+        selectElement.disabled = false;
+
     } catch (error) {
-        console.error(error.message)
+        console.error("Erro ao carregar raças:", error.message);
+        selectElement.innerHTML = '<option value="" disabled>Erro ao carregar a lista de raças</option>';
     }
 }
 
-window.addEventListener("DOMContentLoaded", handleCarregarRacas)
+// 3. Listeners de Eventos
+botao.addEventListener('click', handleFotosRacas);
+window.addEventListener("DOMContentLoaded", handleCarregarRacas);
 
 //window.addEventListener('DOMContentLoaded', handleCarregarraças)
 

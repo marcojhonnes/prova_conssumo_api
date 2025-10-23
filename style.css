@@ -1,22 +1,66 @@
-h1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction:  rou
-    ;
-}
+        /* CSS BÁSICO PARA ORGANIZAÇÃO */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
 
-.menu {
-    display: flex;
-    justify-content: center;align-items: center;
-    flex-direction: row;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: bisque;
-    margin: 3px solid;
-    padding: 1px;
-}
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        
+        #cachorro {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-button {
-    margin-left: 10px;
-}
+        #btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Contêiner onde as imagens serão exibidas */
+        #fotos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            min-height: 200px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+        }
+        
+        /* Estilo para as imagens injetadas pelo JavaScript */
+        .dog-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+        
+        .dog-image:hover {
+            transform: scale(1.03);
+        }
+  
